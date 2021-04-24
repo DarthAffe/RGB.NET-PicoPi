@@ -1,0 +1,45 @@
+﻿<Window x:Class="PicoPiConfig.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PicoPiConfig"
+        mc:Ignorable="d"
+        Width="400" Height="440"
+        Title="RGB.NET PicoPi Configurator">
+
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+
+    <DockPanel LastChildFill="True" Margin="16">
+        <Button DockPanel.Dock="Top" Content="Reload" Command="{Binding ReloadCommand}" />
+        <ComboBox DockPanel.Dock="Top" Margin="0,8" DisplayMemberPath="Id" SelectedItem="{Binding SelectedDevice}" ItemsSource="{Binding Devices}" />
+
+        <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedDevice.Id, FallbackValue=-, StringFormat=SerialNumber: {0}}" />
+        <TextBlock DockPanel.Dock="Top" Margin="0,8" Text="{Binding SelectedDevice.Version, FallbackValue=-, StringFormat=Firmware version: {0}}" />
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Padding="4,2" Margin="0,0,8,0" Content="Save pins" Command="{Binding SavePinsCommand}" />
+            <Button Padding="4,2" Content="Save led-counts" Command="{Binding SaveLedCountsCommand}"  />
+        </StackPanel>
+
+        <TextBlock DockPanel.Dock="Bottom" Margin="0,8" TextWrapping="Wrap" Text="Please double check that the data above is valid (pin number exists on the device, led-count is in the range 0-255) before saving or you might corrupt the firmware of the device." />
+
+        <ItemsControl ItemsSource="{Binding Channels}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:Channel}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="80" FontWeight="Bold" Text="{Binding Index, StringFormat=Channel {0}}" />
+
+                        <TextBlock Text="Pin: " />
+                        <TextBox Margin="0,0,16,0" Width="40" Text="{Binding Pin}" />
+
+                        <TextBlock Text="Led-Count: " />
+                        <TextBox Margin="0,0,16,0" Width="40" Text="{Binding LedCount}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </DockPanel>
+</Window>
