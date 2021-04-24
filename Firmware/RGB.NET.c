@@ -225,10 +225,20 @@ void process_command(uint8_t command, uint8_t const *data, uint16_t length)
         }
         else if (request == 0x0A)
         {
+            for (int i = 0; i < CHANNELS; i++)
+            {
+                led_counts[i] = data[i];
+            }
+            
             write_configuration(data, pins, length);
         }
         else if (request == 0x0B)
         {
+            for (int i = 0; i < CHANNELS; i++)
+            {
+                pins[i] = data[i];
+            }
+
             write_configuration(led_counts, data, length);
         }
         else if (request == 0x0E)
