@@ -135,11 +135,14 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 
     uint8_t chr_count;
 
-    char serial[16];
-    uint8_t id[8];
-    flash_get_unique_id(id);
-    sprintf(serial, "%X", id);
-    string_desc_arr[3] = serial;
+    if (index == 3)
+    {
+        char serial[17];
+        uint8_t id[8];
+        flash_get_unique_id(id);
+        sprintf(serial, "%02X%02X%02X%02X%02X%02X%02X%02X", id[0], id[1], id[2], id[3], id[4], id[5], id[6], id[7]);
+        string_desc_arr[3] = serial;
+    }
 
     if (index == 0)
     {
